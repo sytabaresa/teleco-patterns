@@ -97,6 +97,7 @@ var parameters = {
     b: 0.01,
     c: 0.01,
     d: 0.01,
+    l: 1,
     Eo: 1,
     rho: 0
 };
@@ -108,7 +109,8 @@ var options = {
     yFuncText: "r*sin(p)*cos(t)",
     zFuncText: "r*cos(p)",
     rFuncText: "1",
-    segments: 20,
+    fFuncText: "1",
+    segments: 40,
     uMin: 0.0,
     uMax: Math.PI,
     vMin: 0.00,
@@ -137,7 +139,6 @@ var gui = new dat.GUI();
 var menuParameters =
     {
         resetCam: function () { resetCamera(); },
-        preset1: function () { preset01(); },
         graphFunc: function () { createGraph(); },
         finalValue: 337
     };
@@ -148,11 +149,14 @@ var gui_xText = gui.add(options, 'xFuncText').name('x = f(u,v) = ');
 var gui_yText = gui.add(options, 'yFuncText').name('y = g(u,v) = ');
 var gui_zText = gui.add(options, 'zFuncText').name('z = h(u,v) = ');
 */
-var gui_rText = gui.add(options, 'rFuncText').name('|E| = f(t,p)');
-gui_rText.onChange(function (value) { 
-    options.rFunc = Math.parse(value).compile();
-    console.log(options.rFunc);
-});
+
+var updateRFunc = function (value) {
+    options.rFunc = Math.parse("("+options.fFuncText + ")*(" + options.rFuncText + ")").compile();
+}
+var gui_rText = gui.add(options, 'rFuncText').name('patrón Horiz =');
+gui_rText.onChange(updateRFunc);
+var gui_fText = gui.add(options, 'fFuncText').name('FF =');
+gui_fText.onChange(updateRFunc);
 
 
 var gui_uMin = gui.add(options, 'uMin').name('t min = ');
@@ -190,12 +194,12 @@ gui_Eo.onChange(function (value) { createGraph(); });
 var gui_rho = gui_parameters.add(parameters, 'rho').min(-5).max(5).step(0.01).name('rho = ');
 gui_rho.onChange(function (value) { createGraph(); });
 
+var gui_l = gui_parameters.add(parameters, 'l').min(0).max(5).step(0.01).name('l = ');
+gui_l.onChange(function (value) { createGraph(); });
+
 // GUI -- preset equations
-var gui_preset = gui.addFolder('Patrones predefinidos');
-gui_preset.add(menuParameters, 'preset1').name('Isotrópica');
 gui.add(menuParameters, 'resetCam').name("Reiniciar Cámara");
 gui.add(menuParameters, 'graphFunc').name("Graficar");
-preset01();
 
 animate();
 
@@ -214,10 +218,10 @@ function createGraph() {
         var v = options.vRange * v0 + options.vMin;
         parameters.t = u;
         parameters.p = v;
-  /*       var r = Math.abs(options.rFunc(u, v));
-        var x = options.xFunc(r, u, v);
-        var y = options.yFunc(r, u, v);
-        var z = options.zFunc(r, u, v); */
+        /*       var r = Math.abs(options.rFunc(u, v));
+              var x = options.xFunc(r, u, v);
+              var y = options.yFunc(r, u, v);
+              var z = options.zFunc(r, u, v); */
         var r = Math.abs(options.rFunc.eval(parameters));
         parameters.r = r;
         var x = options.xFunc.eval(parameters);
@@ -276,7 +280,7 @@ function createGraph() {
         // renderer.deallocateObject( graphMesh );
     }
     //wireMaterial.map.repeat.set(options.segments, options.segments);
-    var material = new THREE.MeshNormalMaterial({ opacity: 1.0 });
+    var material = new THREE.MeshNormalMaterial({ opacity: 0.50 });
     material.side = THREE.DoubleSide;
 
 
@@ -285,21 +289,111 @@ function createGraph() {
     scene.add(graphMesh);
 }
 
-function preset01() {
-    /*
-    gui_xText.setValue("cos(u)*(a + b*cos(v))");
-    gui_yText.setValue("sin(u)*(a + b*cos(v))");
-    gui_zText.setValue("b*sin(v)");
-    gui_uMin.setValue(0); gui_uMax.setValue(6.283);
-    gui_vMin.setValue(0); gui_vMax.setValue(6.283);}
-    */
-    gui_rText.setValue("Eo*cos(p)");
-    gui_Eo.setValue(1);
-    gui_rho.setValue(0);
-    gui_segments.setValue(100);
-    createGraph(); resetCamera();
+var patters = [
+    {
+        name: "antenna",
+        desc: "una sola antena",
+        f: "Eo",
+        Eo: 1,
+        rho: 0
+    },
+    {
+        name: "antenna2",
+        desc: "2 antenas distancia d",
+        f: "Eo*cos(t-rho)",
+        Eo: 1,
+        rho: 0
+    },
+    {
+        name: "triang",
+        desc: "triangulo equilatero distancia d",
+        f: "Eo*(exp(-1i*pi/sqrt(3)*cos(pi/6 -t)) + exp(1i*pi/sqrt(3)*cos(pi/6+t)) + exp(1i*pi/sqrt(3)*cos(pi/2-t)))",
+        Eo: 1,
+        rho: 0
+    },
+    {
+        name: "cuadrado",
+        desc: "cuadrado distancia d",
+        f: "Eo*(exp(-1i*pi/sqrt(2)*cos(pi/4 + t)) +   exp(1i*pi/sqrt(2)*cos(pi/4 + t)) + exp(-1i*pi/sqrt(2)*cos(pi/4 - t)) + exp(1i*pi/sqrt(2)*cos(pi/4 - t)))",
+        Eo: 1,
+        rho: 0
+    },
+];
+
+
+var antennas = [
+    {
+        name: "iso",
+        desc: "isotrópica",
+        ff: "1"
+    },
+    {
+        name: "dipoloCorto",
+        desc: "dipolo corto",
+        ff: "sin(p)"
+    },
+    {
+        name: "dipolol2",
+        desc: "dipolo l/2",
+        ff: "cos(pi/2*cos(p))/sin(p)"
+    },
+    {
+        name: "dipolol",
+        desc: "dipolo l",
+        ff: "(cos(pi*cos(p)) +1)/sin(p)"
+    },
+    {
+        name: "dipolo3l2",
+        desc: "dipolo 3l/2",
+        ff: "cos(3*pi/2*cos(p))/sin(p)"
+    },
+    {
+        name: "dipolo2l",
+        desc: "dipolo 2l",
+        ff: "(cos(2*pi*cos(p)) -1)/sin(p)"
+    },
+    {
+        name: "dipolog",
+        desc: "dipolo general",
+        ff: "(cos(pi*l*cos(p)) - cos(pi*l))/sin(p)"
+    }
+]
+
+var gui_preset = gui.addFolder('Patrones predefinidos');
+patters.forEach( (e) => {
+    loadPattern(e);
+});
+
+var gui_preset = gui.addFolder('Antenas predefinidas');
+antennas.forEach( (e) => {
+    loadAntenna(e);
+});
+
+runPattern(patters[1]);
+runAntenna(antennas[1]);
+createGraph(); resetCamera();
+
+function loadPattern(preset) {
+    menuParameters[preset.name] = () => runPattern(preset);
+    gui_preset.add(menuParameters, preset.name).name(preset.desc);
 }
 
+function runPattern(preset) {
+    gui_rText.setValue(preset.f);
+    gui_Eo.setValue(preset.Eo);
+    gui_rho.setValue(preset.rho);
+    //createGraph(); resetCamera();
+}
+
+function loadAntenna(preset) {
+    menuParameters[preset.name] = () => runAntenna(preset);
+    gui_preset.add(menuParameters, preset.name).name(preset.desc);
+}
+
+function runAntenna(preset) {
+    gui_fText.setValue(preset.ff);
+    createGraph(); resetCamera();
+}
 function resetCamera() {
     // CAMERA
     var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
