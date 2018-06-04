@@ -1,0 +1,43 @@
+{
+  "name": "teleco-graphs",
+  "version": "1.0.0",
+  "description": "Graficas de patrones de onda telecomunicaciones",
+  "main": "js/index.js",
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "start": "webpack-dev-server --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sytabaresa/teleco-graphs.git"
+  },
+  "keywords": [
+    "telecomunications",
+    "graphs",
+    "patters"
+  ],
+  "author": "Sebastian Tabares Amaya",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sytabaresa/teleco-graphs/issues"
+  },
+  "homepage": "https://github.com/sytabaresa/teleco-graphs#readme",
+  "dependencies": {
+    "dat.gui": "^0.7.2",
+    "expr-eval": "^1.2.1",
+    "jquery": "^3.3.1",
+    "mathjs": "^4.4.2",
+    "three": "^0.93.0",
+    "threex": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "webpack": "^4.10.2",
+    "webpack-cli": "^3.0.1",
+    "webpack-dev-server": "^3.1.4"
+  }
+}
