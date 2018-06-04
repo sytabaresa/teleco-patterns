@@ -1,7 +1,7 @@
 
 import * as THREE from 'three';
 //import * as THREEX from 'threex';
-import { Parser } from 'expr-eval';
+//import { Parser } from 'expr-eval';
 import Math from 'mathjs';
 import { Detector } from './libs/Detector';
 import { TrackballControls } from './libs/TrackballControls';
@@ -153,9 +153,9 @@ var gui_zText = gui.add(options, 'zFuncText').name('z = h(u,v) = ');
 var updateRFunc = function (value) {
     options.rFunc = Math.parse("("+options.fFuncText + ")*(" + options.rFuncText + ")").compile();
 }
-var gui_rText = gui.add(options, 'rFuncText').name('patrón Horiz =');
+var gui_rText = gui.add(options, 'rFuncText').name('Patrón Horiz =');
 gui_rText.onChange(updateRFunc);
-var gui_fText = gui.add(options, 'fFuncText').name('FF =');
+var gui_fText = gui.add(options, 'fFuncText').name('Factor Forma =');
 gui_fText.onChange(updateRFunc);
 
 
@@ -164,7 +164,7 @@ var gui_uMax = gui.add(options, 'uMax').name('t max = ');
 var gui_vMin = gui.add(options, 'vMin').name('p min = ');
 var gui_vMax = gui.add(options, 'vMax').name('p max = ');
 
-var gui_segments = gui.add(options, 'segments').name('Subdivisiones = ');
+var gui_segments = gui.add(options, 'segments').name('Resolución = ');
 
 
 // GUI -- parameters

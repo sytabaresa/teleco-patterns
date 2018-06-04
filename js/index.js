@@ -1,3 +1,3 @@
 
-import container from './parametric';
+import './parametric';
 

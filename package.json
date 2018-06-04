@@ -1,16 +1,16 @@
 {
-  "name": "teleco-graphs",
-  "version": "1.0.0",
+  "name": "teleco-patterns",
+  "version": "0.1.0",
   "description": "Graficas de patrones de onda telecomunicaciones",
   "main": "js/index.js",
   "scripts": {
-    "build": "webpack",
-    "watch": "webpack --watch",
-    "start": "webpack-dev-server --open"
+    "watch": "webpack --watch  --config webpack.dev.js",
+    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sytabaresa/teleco-graphs.git"
+    "url": "git+https://github.com/sytabaresa/teleco-patterns.git"
   },
   "keywords": [
     "telecomunications",
@@ -18,18 +18,15 @@
     "patters"
   ],
   "author": "Sebastian Tabares Amaya",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/sytabaresa/teleco-graphs/issues"
+    "url": "https://github.com/sytabaresa/teleco-patterns/issues"
   },
-  "homepage": "https://github.com/sytabaresa/teleco-graphs#readme",
+  "homepage": "https://github.com/sytabaresa/teleco-patterns#readme",
   "dependencies": {
     "dat.gui": "^0.7.2",
-    "expr-eval": "^1.2.1",
-    "jquery": "^3.3.1",
     "mathjs": "^4.4.2",
-    "three": "^0.93.0",
-    "threex": "^1.0.0"
+    "three": "^0.93.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -38,6 +35,7 @@
     "babel-preset-env": "^1.7.0",
     "webpack": "^4.10.2",
     "webpack-cli": "^3.0.1",
-    "webpack-dev-server": "^3.1.4"
+    "webpack-dev-server": "^3.1.4",
+    "webpack-merge": "^4.1.2"
   }
 }
