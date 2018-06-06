@@ -7,7 +7,7 @@ import { Detector } from './libs/Detector';
 import { TrackballControls } from './libs/TrackballControls';
 import { Stats } from './libs/Stats';
 import dat from 'dat.gui';
-
+import {patters,antennas} from './patterns';
 
 THREE.TrackballControls = TrackballControls;
 THREE.TrackballControls.prototype = Object.create(THREE.EventDispatcher.prototype);
@@ -98,6 +98,7 @@ var parameters = {
     c: 0.01,
     d: 0.01,
     l: 1,
+    n: 1,
     Eo: 1,
     rho: 0
 };
@@ -136,6 +137,7 @@ options.zRange = options.zMax - options.zMin;
 ///////////////////
 var gui = new dat.GUI();
 
+gui.width = 400;
 var menuParameters =
     {
         resetCam: function () { resetCamera(); },
@@ -196,6 +198,9 @@ gui_rho.onChange(function (value) { createGraph(); });
 
 var gui_l = gui_parameters.add(parameters, 'l').min(0).max(5).step(0.01).name('l = ');
 gui_l.onChange(function (value) { createGraph(); });
+
+var gui_n = gui_parameters.add(parameters, 'n').min(0).max(15).step(1).name('n = ');
+gui_n.onChange(function (value) { createGraph(); });
 
 // GUI -- preset equations
 gui.add(menuParameters, 'resetCam').name("Reiniciar Cámara");
@@ -288,76 +293,6 @@ function createGraph() {
     graphMesh.doubleSided = true;
     scene.add(graphMesh);
 }
-
-var patters = [
-    {
-        name: "antenna",
-        desc: "una sola antena",
-        f: "Eo",
-        Eo: 1,
-        rho: 0
-    },
-    {
-        name: "antenna2",
-        desc: "2 antenas distancia d",
-        f: "Eo*cos(t-rho)",
-        Eo: 1,
-        rho: 0
-    },
-    {
-        name: "triang",
-        desc: "triangulo equilatero distancia d",
-        f: "Eo*(exp(-1i*pi/sqrt(3)*cos(pi/6 -t)) + exp(1i*pi/sqrt(3)*cos(pi/6+t)) + exp(1i*pi/sqrt(3)*cos(pi/2-t)))",
-        Eo: 1,
-        rho: 0
-    },
-    {
-        name: "cuadrado",
-        desc: "cuadrado distancia d",
-        f: "Eo*(exp(-1i*pi/sqrt(2)*cos(pi/4 + t)) +   exp(1i*pi/sqrt(2)*cos(pi/4 + t)) + exp(-1i*pi/sqrt(2)*cos(pi/4 - t)) + exp(1i*pi/sqrt(2)*cos(pi/4 - t)))",
-        Eo: 1,
-        rho: 0
-    },
-];
-
-
-var antennas = [
-    {
-        name: "iso",
-        desc: "isotrópica",
-        ff: "1"
-    },
-    {
-        name: "dipoloCorto",
-        desc: "dipolo corto",
-        ff: "sin(p)"
-    },
-    {
-        name: "dipolol2",
-        desc: "dipolo l/2",
-        ff: "cos(pi/2*cos(p))/sin(p)"
-    },
-    {
-        name: "dipolol",
-        desc: "dipolo l",
-        ff: "(cos(pi*cos(p)) +1)/sin(p)"
-    },
-    {
-        name: "dipolo3l2",
-        desc: "dipolo 3l/2",
-        ff: "cos(3*pi/2*cos(p))/sin(p)"
-    },
-    {
-        name: "dipolo2l",
-        desc: "dipolo 2l",
-        ff: "(cos(2*pi*cos(p)) -1)/sin(p)"
-    },
-    {
-        name: "dipolog",
-        desc: "dipolo general",
-        ff: "(cos(pi*l*cos(p)) - cos(pi*l))/sin(p)"
-    }
-]
 
 var gui_preset = gui.addFolder('Patrones predefinidos');
 patters.forEach( (e) => {
