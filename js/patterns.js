@@ -9,45 +9,38 @@ export var patters = [
     {
         name: "antenna2",
         desc: "2 antenas distancia d",
-        f: "Eo*cos(t-rho)",
+        f: "Eo*cos(pi/2*sin(p)*cos(t-rho))",
         Eo: 1,
         rho: 0
     },
     {
         name: "triang",
         desc: "triangulo equilatero distancia d",
-        f: "Eo*(exp(-1i*pi/sqrt(3)*cos(pi/6 -t)) + exp(1i*pi/sqrt(3)*cos(pi/6+t)) + exp(1i*pi/sqrt(3)*cos(pi/2-t)))",
+        f: "Eo*(exp(-1i*pi/sqrt(3)*sin(p)*cos(pi/6 -t)) + exp(1i*pi/sqrt(3)*sin(p)*cos(pi/6+t)) + exp(1i*pi/sqrt(3)*sin(p)*cos(pi/2-t)))",
         Eo: 1,
         rho: 0
     },
     {
         name: "triang",
         desc: "triangulo equilatero con desfaces",
-        f: "Eo*(exp(-1i*pi/sqrt(3)*cos(pi/6 -t)) + exp(1i*(pi/sqrt(3)*cos(pi/6+t)+rho)) + exp(1i*(pi/sqrt(3)*cos(pi/2-t)+2*rho)))",
+        f: "Eo*(exp(-1i*pi/sqrt(3)*sin(p)*cos(pi/6 -t)) + exp(1i*(pi/sqrt(3)*sin(p)*cos(pi/6+t)+rho)) + exp(1i*(pi/sqrt(3)*sin(p)*cos(pi/2-t)+2*rho)))",
         Eo: 1,
         rho: Math.PI/3
     },
     {
         name: "cuadrado",
         desc: "cuadrado distancia d",
-        f: "Eo*(exp(-1i*pi/sqrt(2)*cos(pi/4 + t)) +   exp(1i*pi/sqrt(2)*cos(pi/4 + t)) + exp(-1i*pi/sqrt(2)*cos(pi/4 - t)) + exp(1i*pi/sqrt(2)*cos(pi/4 - t)))",
+        f: "Eo*(exp(-1i*pi/sqrt(2)*sin(p)*cos(pi/4 + t)) +   exp(1i*pi/sqrt(2)*sin(p)*cos(pi/4 + t)) + exp(-1i*pi/sqrt(2)*sin(p)*cos(pi/4 - t)) + exp(1i*pi/sqrt(2)*sin(p)*cos(pi/4 - t)))",
         Eo: 1,
         rho: 0
     },
     {
         name: "bionomial",
         desc: "arreglo binomial",
-        f: "Eo*2^n*cos(t)^n",
+        f: "Eo*2^n*sin(p)*cos(t)^n",
         Eo: 1,
         rho: 0
-    },
-    {
-        name: "bionomial",
-        desc: "arreglo binomial",
-        f: "Eo*2^n*cos(t)^n",
-        Eo: 1,
-        rho: 0
-    },
+    }
 ];
 
 export var antennas = [
