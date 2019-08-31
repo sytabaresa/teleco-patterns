@@ -2,12 +2,15 @@
 import * as THREE from 'three';
 //import * as THREEX from 'threex';
 //import { Parser } from 'expr-eval';
-import Math from 'mathjs';
+import { create, all } from 'mathjs'
 import { Detector } from './libs/Detector';
 import { TrackballControls } from './libs/TrackballControls';
 import { Stats } from './libs/Stats';
 import dat from 'dat.gui';
 import {patters,antennas} from './patterns';
+
+const config = { }
+const Math = create(all, config)
 
 THREE.TrackballControls = TrackballControls;
 THREE.TrackballControls.prototype = Object.create(THREE.EventDispatcher.prototype);
@@ -75,7 +78,7 @@ var floorGeometry = new THREE.PlaneGeometry(10, 10, 50, 50);
 var floor = new THREE.Mesh(floorGeometry, wireframeMaterial);
 floor.position.z = -0.01;
 // rotate to lie in x-y plane
-// floor.rotation.x = Math.PI / 2;
+// floor.rotation.x = Math.pi / 2;
 scene.add(floor);
 
 var normMaterial = new THREE.MeshNormalMaterial;
@@ -113,9 +116,9 @@ var options = {
     fFuncText: "1",
     segments: 40,
     uMin: 0.0,
-    uMax: Math.PI,
+    uMax: Math.pi,
     vMin: 0.00,
-    vMax: 2 * Math.PI,
+    vMax: 2 * Math.pi,
     zMin: -10,
     zMax: 10,
     xMin: 0,

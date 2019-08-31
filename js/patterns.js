@@ -25,7 +25,7 @@ export var patters = [
         desc: "triangulo equilatero con desfaces",
         f: "Eo*(exp(-1i*pi/sqrt(3)*sin(p)*cos(pi/6 -t)) + exp(1i*(pi/sqrt(3)*sin(p)*cos(pi/6+t)+rho)) + exp(1i*(pi/sqrt(3)*sin(p)*cos(pi/2-t)+2*rho)))",
         Eo: 1,
-        rho: Math.PI/3
+        rho: Math.pi/3
     },
     {
         name: "cuadrado",
