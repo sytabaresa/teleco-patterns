@@ -25,9 +25,9 @@
   "homepage": "https://github.com/sytabaresa/teleco-patterns#readme",
   "dependencies": {
     "dat.gui": "^0.7.6",
+    "lodash": ">=4.17.15",
     "mathjs": "^6.1.0",
-    "three": "^0.107.0",
-    "lodash": ">=4.17.15"
+    "three": "^0.107.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
