@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "Graficas de patrones de onda telecomunicaciones",
   "main": "js/index.js",
+  "engines": {
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
+  },
   "scripts": {
     "watch": "webpack --watch  --config webpack.dev.js",
     "start": "webpack-dev-server --open --config webpack.dev.js",
