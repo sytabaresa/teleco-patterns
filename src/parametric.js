@@ -232,13 +232,13 @@ function createGraph() {
               var x = options.xFunc(r, u, v);
               var y = options.yFunc(r, u, v);
               var z = options.zFunc(r, u, v); */
-        var r = Math.abs(options.rFunc.eval(parameters));
+        var r = Math.abs(options.rFunc.evaluate(parameters));
         // console.log(parameters)
         // console.log(r)
         parameters.r = r;
-        var x = options.xFunc.eval(parameters);
-        var y = options.yFunc.eval(parameters);
-        var z = options.zFunc.eval(parameters);
+        var x = options.xFunc.evaluate(parameters);
+        var y = options.yFunc.evaluate(parameters);
+        var z = options.zFunc.evaluate(parameters);
         // console.log(r,x,y,z);
 
         if (isNaN(x) || isNaN(y) || isNaN(z))
