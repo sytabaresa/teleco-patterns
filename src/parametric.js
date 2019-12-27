@@ -31,7 +31,7 @@ var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
 var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
 camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
 scene.add(camera);
-camera.position.set(0, 150, 400);
+camera.position.set(0, 150, 800);
 camera.lookAt(scene.position);
 
 // RENDERER
@@ -121,7 +121,7 @@ var options = {
     zFuncText: "r*cos(p)",
     rFuncText: "1",
     fFuncText: "1",
-    segments: 40,
+    segments: 60,
     uMin: 0.0,
     uMax: Math.PI,
     vMin: 0.00,
@@ -346,7 +346,7 @@ function resetCamera() {
     var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
     var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
     camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
-    camera.position.set(2 * options.xMax, 0.5 * options.yMax, 4 * options.zMax);
+    camera.position.set(2 * options.xMax, 6 * options.yMax, 4 * options.zMax);
     camera.up = new THREE.Vector3(0, 0, 1);
     camera.lookAt(scene.position);
     scene.add(camera);
