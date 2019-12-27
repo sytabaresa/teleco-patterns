@@ -7,9 +7,11 @@ import { Detector } from './libs/Detector';
 import { TrackballControls } from './libs/TrackballControls';
 import { Stats } from './libs/Stats';
 import dat from 'dat.gui';
-import {patters,antennas} from './patterns';
+import { patters, antennas } from './patterns';
 
-const config = { }
+import './assets/css/style.css';
+
+const config = {}
 const Math = create(all, config)
 
 THREE.TrackballControls = TrackballControls;
@@ -78,7 +80,7 @@ var floorGeometry = new THREE.PlaneGeometry(10, 10, 50, 50);
 var floor = new THREE.Mesh(floorGeometry, wireframeMaterial);
 floor.position.z = -0.01;
 // rotate to lie in x-y plane
-// floor.rotation.x = Math.pi / 2;
+// floor.rotation.x = Math.PI / 2;
 scene.add(floor);
 
 var normMaterial = new THREE.MeshNormalMaterial;
@@ -116,9 +118,9 @@ var options = {
     fFuncText: "1",
     segments: 40,
     uMin: 0.0,
-    uMax: Math.pi,
+    uMax: Math.PI,
     vMin: 0.00,
-    vMax: 2 * Math.pi,
+    vMax: 2 * Math.PI,
     zMin: -10,
     zMax: 10,
     xMin: 0,
@@ -142,11 +144,11 @@ var gui = new dat.GUI();
 
 gui.width = 400;
 var menuParameters =
-    {
-        resetCam: function () { resetCamera(); },
-        graphFunc: function () { createGraph(); },
-        finalValue: 337
-    };
+{
+    resetCam: function () { resetCamera(); },
+    graphFunc: function () { createGraph(); },
+    finalValue: 337
+};
 
 // GUI -- equation
 /*
@@ -156,7 +158,7 @@ var gui_zText = gui.add(options, 'zFuncText').name('z = h(u,v) = ');
 */
 
 var updateRFunc = function (value) {
-    options.rFunc = Math.parse("("+options.fFuncText + ")*(" + options.rFuncText + ")").compile();
+    options.rFunc = Math.parse("(" + options.fFuncText + ")*(" + options.rFuncText + ")").compile();
 }
 var gui_rText = gui.add(options, 'rFuncText').name('Patrón Horiz =');
 gui_rText.onChange(updateRFunc);
@@ -231,11 +233,13 @@ function createGraph() {
               var y = options.yFunc(r, u, v);
               var z = options.zFunc(r, u, v); */
         var r = Math.abs(options.rFunc.eval(parameters));
+        // console.log(parameters)
+        // console.log(r)
         parameters.r = r;
         var x = options.xFunc.eval(parameters);
         var y = options.yFunc.eval(parameters);
         var z = options.zFunc.eval(parameters);
-        //console.log(r,x,y,z);
+        // console.log(r,x,y,z);
 
         if (isNaN(x) || isNaN(y) || isNaN(z))
             vect.set(0, 0, 0); // TODO: better fix
@@ -298,12 +302,12 @@ function createGraph() {
 }
 
 var gui_preset = gui.addFolder('Patrones predefinidos');
-patters.forEach( (e) => {
+patters.forEach((e) => {
     loadPattern(e);
 });
 
 var gui_preset = gui.addFolder('Antenas predefinidas');
-antennas.forEach( (e) => {
+antennas.forEach((e) => {
     loadAntenna(e);
 });
 
@@ -317,7 +321,7 @@ function loadPattern(preset) {
 }
 
 function runPattern(preset) {
-    gui_rText.setValue(preset.f);
+    gui_rText.setValue(preset.f.replace(/ /g, ""));
     gui_Eo.setValue(preset.Eo);
     gui_rho.setValue(preset.rho);
     //createGraph(); resetCamera();

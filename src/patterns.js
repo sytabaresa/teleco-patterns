@@ -14,23 +14,36 @@ export var patters = [
         rho: 0
     },
     {
-        name: "triang",
+        name: "triang1",
         desc: "triangulo equilatero distancia d",
-        f: "Eo*(exp(-1i*pi/sqrt(3)*sin(p)*cos(pi/6 -t)) + exp(1i*pi/sqrt(3)*sin(p)*cos(pi/6+t)) + exp(1i*pi/sqrt(3)*sin(p)*cos(pi/2-t)))",
+        f: `Eo*(
+            exp(-1i*pi/sqrt(3)*sin(p)*cos(pi/6-t)) + 
+            exp(+1i*pi/sqrt(3)*sin(p)*cos(pi/6+t)) + 
+            exp(+1i*pi/sqrt(3)*sin(p)*cos(pi/2-t))
+            )`,
         Eo: 1,
         rho: 0
     },
     {
-        name: "triang",
+        name: "triang2",
         desc: "triangulo equilatero con desfaces",
-        f: "Eo*(exp(-1i*pi/sqrt(3)*sin(p)*cos(pi/6 -t)) + exp(1i*(pi/sqrt(3)*sin(p)*cos(pi/6+t)+rho)) + exp(1i*(pi/sqrt(3)*sin(p)*cos(pi/2-t)+2*rho)))",
+        f: `Eo*(
+            exp(-1i*(pi/sqrt(3)*sin(p)*cos(pi/6-t)+0*rho)) + 
+            exp(+1i*(pi/sqrt(3)*sin(p)*cos(pi/6+t)+1*rho)) + 
+            exp(+1i*(pi/sqrt(3)*sin(p)*cos(pi/2-t)+2*rho))
+            )`,
         Eo: 1,
-        rho: Math.pi/3
+        rho: Math.PI / 3
     },
     {
         name: "cuadrado",
         desc: "cuadrado distancia d",
-        f: "Eo*(exp(-1i*pi/sqrt(2)*sin(p)*cos(pi/4 + t)) +   exp(1i*pi/sqrt(2)*sin(p)*cos(pi/4 + t)) + exp(-1i*pi/sqrt(2)*sin(p)*cos(pi/4 - t)) + exp(1i*pi/sqrt(2)*sin(p)*cos(pi/4 - t)))",
+        f: `Eo*(
+            exp(-1i*pi/sqrt(2)*sin(p)*cos(pi/4 + t)) + 
+            exp(+1i*pi/sqrt(2)*sin(p)*cos(pi/4 + t)) + 
+            exp(-1i*pi/sqrt(2)*sin(p)*cos(pi/4 - t)) + 
+            exp(+1i*pi/sqrt(2)*sin(p)*cos(pi/4 - t))
+            )`,
         Eo: 1,
         rho: 0
     },
