@@ -4,19 +4,16 @@ import * as THREE from 'three';
 //import { Parser } from 'expr-eval';
 import { create, all } from 'mathjs'
 import { Detector } from './libs/Detector';
-import { TrackballControls } from './libs/TrackballControls';
 import { Stats } from './libs/Stats';
 import dat from 'dat.gui';
 import { patters, antennas } from './patterns';
+import { TrackballControls } from './libs/TrackballControls.js';
 
 import './assets/css/style.css';
 
 const config = {}
 const Math = create(all, config)
 
-THREE.TrackballControls = TrackballControls;
-THREE.TrackballControls.prototype = Object.create(THREE.EventDispatcher.prototype);
-THREE.TrackballControls.prototype.constructor = TrackballControls;
 
 //var keyboard = new THREEx.KeyboardState();
 var clock = new THREE.Clock();
@@ -52,7 +49,15 @@ container.appendChild(renderer.domElement);
 //THREEx.FullScreen.bindKey({ charCode: 'm'.charCodeAt(0) });
 
 // CONTROLS
-controls = new THREE.TrackballControls(camera, renderer.domElement);
+function createControls( camera ) {
+    controls = new TrackballControls( camera, renderer.domElement );
+    controls.rotateSpeed = 1.0;
+    controls.zoomSpeed = 1.2;
+    controls.panSpeed = 0.8;
+    controls.keys = [ 65, 83, 68 ];
+}
+
+createControls(camera);
 
 // STATS
 stats = new Stats();
@@ -345,8 +350,7 @@ function resetCamera() {
     camera.up = new THREE.Vector3(0, 0, 1);
     camera.lookAt(scene.position);
     scene.add(camera);
-
-    controls = new THREE.TrackballControls(camera, renderer.domElement);
+    createControls(camera);
     //THREEx.WindowResize(renderer, camera);
 }
 function animate() {
