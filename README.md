@@ -6,7 +6,7 @@ Dibujos de patrones de radiacion de antenas y arreglos de antenas
 ![demo](./demo.png)
 
 ## Demo
-Puedes ver la primer version [aquí](http://telecopatterns.tabares.me/)
+Puedes ver la primer version [aquí](https://github.com/sytabaresa/teleco-patterns)
 
 ## Uso
 
