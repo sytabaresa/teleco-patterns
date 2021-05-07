@@ -29,7 +29,7 @@
   "homepage": "https://telecopatterns.tabares.me",
   "dependencies": {
     "dat.gui": "^0.7.6",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "mathjs": "^6.2.5",
     "three": "^0.125.0"
   },
