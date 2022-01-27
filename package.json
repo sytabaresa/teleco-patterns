@@ -31,7 +31,7 @@
     "dat.gui": "^0.7.6",
     "lodash": "^4.17.19",
     "mathjs": "^6.2.5",
-    "three": "^0.125.0"
+    "three": "^0.137.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.7",
