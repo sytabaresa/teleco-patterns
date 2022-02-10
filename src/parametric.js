@@ -1,13 +1,31 @@
 
-import * as THREE from 'three';
+import {
+    AxesHelper,
+    CanvasRenderer,
+    Clock,
+    DoubleSide,
+    FogExp2,
+    Mesh,
+    MeshBasicMaterial,
+    MeshNormalMaterial,
+    MeshLambertMaterial,
+    PointLight,
+    PerspectiveCamera,
+    PlaneGeometry,
+    Scene,
+    WebGLRenderer,
+    Vector3,
+} from 'three'
+import { ParametricGeometry } from 'three/examples/jsm/geometries/ParametricGeometry';
+import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls';
+
 //import * as THREEX from 'threex';
 //import { Parser } from 'expr-eval';
 import { create, all } from 'mathjs'
 import { Detector } from './libs/Detector';
-import { Stats } from './libs/Stats';
+import Stats from 'stats.js';
 import dat from 'dat.gui';
 import { patters, antennas } from './patterns';
-import { TrackballControls } from './libs/TrackballControls.js';
 
 import './assets/css/style.css';
 
@@ -16,7 +34,7 @@ const Math = create(all, config)
 
 
 //var keyboard = new THREEx.KeyboardState();
-var clock = new THREE.Clock();
+var clock = new Clock();
 
 
 var container, scene, camera, renderer, controls, stats;
@@ -25,20 +43,20 @@ var gridMaterial, wireMaterial, vertexColorMaterial;
 var graphMesh;
 
 // SCENE
-scene = new THREE.Scene();
+scene = new Scene();
 // CAMERA
 var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
 var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
-camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+camera = new PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
 scene.add(camera);
 camera.position.set(0, 150, 800);
 camera.lookAt(scene.position);
 
 // RENDERER
 if (Detector.webgl)
-    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer = new WebGLRenderer({ antialias: true });
 else
-    renderer = new THREE.CanvasRenderer();
+    renderer = new CanvasRenderer();
 
 renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 container = document.getElementById('app');
@@ -49,47 +67,47 @@ container.appendChild(renderer.domElement);
 //THREEx.FullScreen.bindKey({ charCode: 'm'.charCodeAt(0) });
 
 // CONTROLS
-function createControls( camera ) {
-    controls = new TrackballControls( camera, renderer.domElement );
+function createControls(camera) {
+    controls = new TrackballControls(camera, renderer.domElement);
     controls.rotateSpeed = 1.0;
     controls.zoomSpeed = 1.2;
     controls.panSpeed = 0.8;
-    controls.keys = [ 65, 83, 68 ];
+    controls.keys = [65, 83, 68];
 }
 
 createControls(camera);
 
 // STATS
 stats = new Stats();
-stats.domElement.style.position = 'absolute';
-stats.domElement.style.bottom = '0px';
-stats.domElement.style.zIndex = 100;
-container.appendChild(stats.domElement);
+stats.dom.style.position = 'absolute';
+stats.dom.style.bottom = '0';
+stats.dom.style.zIndex = 100;
+container.appendChild(stats.dom);
 
 // LIGHT
-var light = new THREE.PointLight(0xffffff);
+var light = new PointLight(0xffffff);
 light.position.set(0, 250, 0);
 scene.add(light);
 
 // SKYBOX/FOG
-scene.fog = new THREE.FogExp2(0x888888, 0.0025);
+scene.fog = new FogExp2(0x888888, 0.0025);
 
 ////////////
 // CUSTOM //
 ////////////
 
-scene.add(new THREE.AxesHelper());
+scene.add(new AxesHelper());
 // wireframe for xy-plane
-var wireframeMaterial = new THREE.MeshBasicMaterial({ color: 0x000088, wireframe: true, side: THREE.DoubleSide });
-var floorGeometry = new THREE.PlaneGeometry(10, 10, 50, 50);
-var floor = new THREE.Mesh(floorGeometry, wireframeMaterial);
+var wireframeMaterial = new MeshBasicMaterial({ color: 0x000088, wireframe: true, side: DoubleSide });
+var floorGeometry = new PlaneGeometry(10, 10, 50, 50);
+var floor = new Mesh(floorGeometry, wireframeMaterial);
 floor.position.z = -0.01;
 // rotate to lie in x-y plane
 // floor.rotation.x = Math.PI / 2;
 scene.add(floor);
 
-var normMaterial = new THREE.MeshNormalMaterial;
-var shadeMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 });
+var normMaterial = new MeshNormalMaterial;
+var shadeMaterial = new MeshLambertMaterial({ color: 0xff0000 });
 
 // "wireframe texture"
 /*
@@ -253,7 +271,7 @@ function createGraph() {
     };
 
     // true => sensible image tile repeat...
-    graphGeometry = new THREE.ParametricGeometry(meshFunction, options.segments, options.segments, true);
+    graphGeometry = new ParametricGeometry(meshFunction, options.segments, options.segments, true);
     //console.log(graphGeometry);
     ///////////////////////////////////////////////
     // calculate vertex colors based on Z values //
@@ -266,21 +284,21 @@ function createGraph() {
     // faces are indexed using characters
     var faceIndices = ['a', 'b', 'c', 'd'];
     // first, assign colors to vertices as desired
-    for (var i = 0; i < graphGeometry.vertices.length; i++) {
-        point = graphGeometry.vertices[i];
-        color = new THREE.Color(0x0000ff);
-        color.setHSL(0.7 * (options.zMax - point.z) / options.zRange, 1, 0.5);
-        graphGeometry.colors[i] = color; // use options array for convenience
-    }
-    // copy the colors as necessary to the face's vertexColors array.
-    for (var i = 0; i < graphGeometry.faces.length; i++) {
-        face = graphGeometry.faces[i];
-        numberOfSides = (face instanceof THREE.Face3) ? 3 : 4;
-        for (var j = 0; j < numberOfSides; j++) {
-            vertexIndex = face[faceIndices[j]];
-            face.vertexColors[j] = graphGeometry.colors[vertexIndex];
-        }
-    }
+    // for (var i = 0; i < graphGeometry.attributes.position.array.length; i++) {
+    //     point = graphGeometry.vertices[i];
+    //     color = new THREE.Color(0x0000ff);
+    //     color.setHSL(0.7 * (options.zMax - point.z) / options.zRange, 1, 0.5);
+    //     graphGeometry.colors[i] = color; // use options array for convenience
+    // }
+    // // copy the colors as necessary to the face's vertexColors array.
+    // for (var i = 0; i < graphGeometry.faces.length; i++) {
+    //     face = graphGeometry.faces[i];
+    //     numberOfSides = (face instanceof THREE.Face3) ? 3 : 4;
+    //     for (var j = 0; j < numberOfSides; j++) {
+    //         vertexIndex = face[faceIndices[j]];
+    //         face.vertexColors[j] = graphGeometry.colors[vertexIndex];
+    //     }
+    // }
     ///////////////////////
     // end vertex colors //
     ///////////////////////
@@ -297,11 +315,11 @@ function createGraph() {
         // renderer.deallocateObject( graphMesh );
     }
     //wireMaterial.map.repeat.set(options.segments, options.segments);
-    var material = new THREE.MeshNormalMaterial({ opacity: 0.50 });
-    material.side = THREE.DoubleSide;
+    var material = new MeshNormalMaterial({ opacity: 0.50 });
+    material.side = DoubleSide;
 
 
-    graphMesh = new THREE.Mesh(graphGeometry, material);
+    graphMesh = new Mesh(graphGeometry, material);
     graphMesh.doubleSided = true;
     scene.add(graphMesh);
 }
@@ -345,9 +363,9 @@ function resetCamera() {
     // CAMERA
     var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
     var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
-    camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+    camera = new PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
     camera.position.set(2 * options.xMax, 6 * options.yMax, 4 * options.zMax);
-    camera.up = new THREE.Vector3(0, 0, 1);
+    camera.up = new Vector3(0, 0, 1);
     camera.lookAt(scene.position);
     scene.add(camera);
     createControls(camera);
